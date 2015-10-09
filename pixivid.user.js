@@ -2,7 +2,7 @@
 // @name           Pixiv Illust Id Quick Open
 // @namespace      i-c0112
 // @description    If your'e lazy and don't want to type url yourself. This plugin will do that for you.
-// @version 0.0.2
+// @version 0.0.3
 // @include        *
 // ==/UserScript==
 
@@ -26,7 +26,7 @@
     pI.dialog = document.createElement('div');
     pI.dialog.id = "pixivDiv";
     pI.dialog.innerHTML =
-    "<div align='center'>Pixiv Illust Id:<br/><input type='text' id='pixivInput' value='" + pI.getSelectionText() + "'/><br/><input type='radio' name='memberOrIllust' value='illust' checked>Illust</input><input type='radio' name='memberOrIllust' value='member'>Member</input><br/><button onclick='pixivid.openId();'>OK</button><button onclick='pixivid.hide();'>Cancel</button></div>";
+    "<div align='center'>Pixiv Illust Id:<br/><input type='text' id='pixivInput'/><br/><input type='radio' name='memberOrIllust' value='illust' checked>Illust</input><input type='radio' name='memberOrIllust' value='member'>Member</input><br/><button onclick='pixivid.openId();'>OK</button><button onclick='pixivid.hide();'>Cancel</button></div>";
     pI.dialog.style.display = "none";
     pI.dialog.style.position = "fixed";
     pI.dialog.style.opacity = "0.9";
@@ -47,6 +47,7 @@
       pI.createDiv();
     }
     pI.dialog.style.display = "block";
+    pI.dialog.querySelector("input[type=text]").value = pI.getSelectionText();
     pI.visible = true;
   }
 
@@ -72,7 +73,7 @@
 
   pI.keyPress = function (e){
     //Check to see if "P" is pressed after ALT
-    if(e.keyCode == 80 && pI.ctrlFire){
+    if(e.keyCode == 80 && e.altKey){
       if(!pI.visible){
         pI.show();
       }else{
@@ -80,11 +81,10 @@
       }
     }
 
-    //Make sure the Alt key was previously depressed
-    if(e.keyCode == 18){
-      pI.ctrlFire = true;
-    }else{
-      pI.ctrlFire = false;
+    if(e.keyCode == 13){
+      pI.openId();
+      // BUGFIX prevent unwanted behavior happens outside the dialog
+      e.preventDefault();
     }
   }
 
