@@ -85,6 +85,7 @@
       pI.openId();
       // BUGFIX prevent unwanted behavior happens outside the dialog
       e.preventDefault();
+      e.stopImmediatePropagation();
     }
   }
 
