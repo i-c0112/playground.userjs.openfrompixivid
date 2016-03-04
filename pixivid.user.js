@@ -62,12 +62,14 @@
   pI.openId = function(){
     var idDiv = document.getElementById('pixivInput');
     var idText = idDiv.value;
-    idDiv.value = "";
-    // open a new tab loading the illust
-    var url = "http://pixiv.net/";
-    url += document.querySelector("input[name='memberOrIllust']:checked").value === "illust" ? "member_illust.php?mode=medium&illust_id=" : "member.php?id=";
-    url += idText;
-    window.open(url, "_blank");
+    if (idText != ""){
+      idDiv.value = "";
+      // open a new tab loading the illust
+      var url = "http://pixiv.net/";
+      url += document.querySelector("input[name='memberOrIllust']:checked").value === "illust" ? "member_illust.php?mode=medium&illust_id=" : "member.php?id=";
+      url += idText;
+      window.open(url, "_blank");
+    }
     pI.hide();
   }
 
@@ -81,10 +83,12 @@
       }
     }
 
-    if(e.keyCode == 13){
+    if(e.keyCode == 13 && pI.visible){
       pI.openId();
       // BUGFIX prevent unwanted behavior happens outside the dialog
       e.preventDefault();
+      // Try to block the website's original script
+      e.stopImmediatePropagation();
     }
   }
 
